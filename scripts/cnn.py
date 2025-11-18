@@ -18,7 +18,7 @@ np.random.seed(42)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 #######################################
-# STEP 1: Text Preprocessing for CNN
+# Text Preprocessing for CNN
 ########################################
 
 class TextPreprocessor:
@@ -59,7 +59,7 @@ class TextPreprocessor:
         return np.array(sequences)
 
 #######################################
-# STEP 2: CNN Model
+# CNN Model
 #######################################
 
 class TextCNN(nn.Module):
@@ -101,7 +101,7 @@ class TextCNN(nn.Module):
         return output.squeeze()
 
 #######################################
-# STEP 3: Training
+# Training
 #######################################
 
 def train_model(model, train_loader, val_loader, epochs=20, lr=0.001):
@@ -148,7 +148,7 @@ def train_model(model, train_loader, val_loader, epochs=20, lr=0.001):
         if val_acc > best_val_acc:
             best_val_acc = val_acc
             patience_counter = 0
-            torch.save(model.state_dict(), 'results/cnn.pth')
+            torch.save(model, 'results/cnn_model.pth')
         else:
             patience_counter += 1
             if patience_counter >= patience:
@@ -156,7 +156,7 @@ def train_model(model, train_loader, val_loader, epochs=20, lr=0.001):
                 break
 
     # Load best model
-    model.load_state_dict(torch.load('results/cnn.pth'))
+    model = torch.load('results/cnn_model.pth')
     return model
 
 def evaluate_model(model, test_loader, y_test):
@@ -234,7 +234,14 @@ if __name__ == "__main__":
     model = train_model(model, train_loader, val_loader, epochs=20)
 
     # Evaluate
-    print("\nEvaluating on test set...") # 0.834
+    print("\nEvaluating on test set...") # 0.834 classification accuracy (test)
     test_preds = evaluate_model(model, test_loader, y_test)
 
-    print("\n Training complete!")
+    print("\nTraining complete!")
+
+    #######################################
+    # STEP 4: Make Predictions on Test Data
+    #######################################
+
+    # Do this in other script: primary_task_use_script.py
+    

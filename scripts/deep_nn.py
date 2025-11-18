@@ -19,7 +19,7 @@ np.random.seed(42)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 #######################################
-# STEP 1: Feature Engineering
+# Feature Engineering
 #######################################
 
 def create_features(train_texts, val_texts, test_texts):
@@ -40,7 +40,7 @@ def create_features(train_texts, val_texts, test_texts):
     return X_train, X_val, X_test, vectorizer, scaler
 
 #######################################
-# STEP 2: Deep NN Model
+# Deep NN Model
 #######################################
 
 class DeepNN(nn.Module):
@@ -68,7 +68,7 @@ class DeepNN(nn.Module):
         return self.network(x).squeeze()
 
 #######################################
-# STEP 3: Training
+# Training
 #######################################
 
 def train_model(model, train_loader, val_loader, epochs=30, lr=0.001):
