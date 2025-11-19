@@ -1,37 +1,33 @@
 ---
 title: "Predictive modeling of claims status"
-author: 'YOUR NAMES HERE'
+author: 'Lucas Childs, '
 date: today
 ---
 
 ### Abstract
 
-Provide a 3-5 sentence summary of your work on the primary task. Indicate what input data was used, what method was used for binary class predictions, what method was used for multiclass predictions, and what estimated accuracies were achieved.
-
-> *Header and paragraph content was scraped from the raw webpages and processed into term frequencies of word tokens. For binary classification, a two-layer neural network yielded an estimated 81.4% accuracy; for multiclass classification, a support vector machine gave 78% accuracy.*
+For the primary task, we developed a Convolutional Neural Network (CNN) for binary webpage classification using the claims-raw.RData training dataset containing 2,165 labeled webpages. The model predicts whether webpages contain "Relevant claim content" or "N/A: No relevant content." The trained CNN achieved 83.4% classification accuracy on the test set of `claims-raw.RData`, and was deployed to generate predictions on the unlabeled `claims-test.RData` dataset (929 webpages). Predicted results were saved to `preds-group[10].RData`. 
 
 ### Preprocessing
 
-In one paragraph lay out your preprocessing pipeline. No need to provide exact step-by-step detail; just give an overview of the main components:
-
--   what text content was extracted from HTML
-
--   how text was cleaned
-
--   how cleaned text was represented quantitatively
+The preprocessing pipeline extracted all text content from HTML using `get_text()` from the BeautifulSoup library. This parses the HTML structure and retrieves text from paragraphs, headers, and other elements. Text cleaning involved removing URLs, email addresses, punctuation, and numeric characters, followed by splitting text strings by whitespace and converting text to lowercase. For quantitative representation, the cleaned text was converted into fixed-length sequences of integers using a vocabulary-based approach where a vocabulary of the 10,000 most frequent words was built from the training data. Each word was mapped to a unique integer index, and documents were converted to sequences of these indices, truncated or padded to a maximum length of 500 tokens to ensure uniform input dimensions for the neural network.
 
 ### Methods
 
-Describe your final predictive models. Include one paragraph with details on the binary classification approach, and one on the multiclass approach. Include for each:
-
--   what ML/statistical method was used
-
--   model specification and hyperparameter selection
-
--   training method
+The binary classification model uses a Convolutional Neural Network architecture specifically designed for text classification. The model specification includes an embedding layer (128 dimensions) to convert word indices into dense vectors, followed by three parallel 1D convolutional layers with filter sizes of 3, 4, and 5 (100 filters each) to capture n-gram patterns of different lengths. Max-pooling was used to extract the most important features and a fully connected layer with dropout (0.5) was used for regularization. Hyperparameters were selected based on common practices for text CNNs, with a vocabulary size of 10,000 words and maximum sequence length of 500 tokens. The model was trained using the Adam optimizer (learning rate 0.001) with binary cross-entropy loss over 20 epochs (not training beyond this amount because of time limitations), employing early stopping (patience=15) based on validation accuracy to prevent overfitting, with the best-performing model saved for deployment.
 
 ### Results
 
-Indicate the predictive accuracy of the binary classifications and the multiclass classifications. Provide a table for each, and report sensitivity, specificity, and accuracy.[^1]
+For the binary classification approach, we started by implementing a deep feedforward neural network, but chose a CNN as the final model for its increased classification accuracy. 
 
-[^1]: Read [this article](https://yardstick.tidymodels.org/articles/multiclass.html) on multiclass averaging.
+**Binary Classification: CNN metrics:**
+
+```{r, echo=FALSE}
+CNN_metrics <- data.frame(
+  Metric = c("Accuracy", "Sensitivity", "Specificity"),
+  Value = c(0.833718, 0.864078, 0.806167)
+)
+
+knitr::kable(CNN_metrics)
+```
+
