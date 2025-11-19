@@ -8,7 +8,7 @@ date: today
 
 Does including header content improve predictions? Answer the question and provide quantitative evidence supporting your answer.
 
-The goal of this analysis was to check whether including HTML headers in training data (2,165 webpages) improved binary class prediction accuracy. Webpages were either classified as having "No relevant content" or "Relevant claim content." We discovered that including header content does not improve prediction accuracy. After including headers, the Ridge regularized logistic regression model accuracy decreased from 0.797 (baseline) to 0.771. Although these numbers are very similar, we can conclude that headers do not help prediction accuracy, so are not needed in the training data.
+The goal of this analysis was to check whether including HTML headers in training data (2,165 webpages) improved binary class prediction accuracy. Webpages were either classified as having "No relevant content" or "Relevant claim content." We discovered that including header content does not improve prediction accuracy. After including headers, the Ridge regularized logistic principle component regression model accuracy decreased from 0.797 (baseline) to 0.771. Although these numbers are very similar, we can conclude that headers do not help prediction accuracy, so are not needed in the training data.  
 
 ### Bigrams
 
