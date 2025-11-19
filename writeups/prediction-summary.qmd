@@ -1,6 +1,6 @@
 ---
 title: "Predictive modeling of claims status"
-author: 'Lucas Childs, '
+author: 'Lucas Childs, Akhil'
 date: today
 ---
 
@@ -72,6 +72,6 @@ After validating the model, I generated predictions for all 929 unlabeled webpag
 
 ### Deliverables
 
-All required files for Primary Task 1B have been included. The deployable model (`mclass_torch_model.pt`) and label mapping (`mclass_label_mapping.json`) are stored in the `results/` directory. The preprocessing, training, and prediction scripts are stored in `scripts/`, including a demonstration script showing how to load the saved model and run inference on new text. The final predictions for the test set were saved to `mclass_pred.RData` and provided to the group for integration into the final submission.
+All required files for Primary Task 1B have been included. The deployable model (`mclass_torch_model.pt`) and label mapping (`mclass_label_mapping.json`) are stored in the `results/` directory. The preprocessing, training, and prediction scripts are stored in `scripts/`, including a demonstration script showing how to load the saved model and run inference on new text. The final predictions for the test set were saved to `preds_group10.RData` and provided to the group for integration into the final submission.
 
 

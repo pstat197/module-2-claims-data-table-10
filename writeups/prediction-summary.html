@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Lucas Childs,">
+<meta name="author" content="Lucas Childs, Akhil">
 <meta name="dcterms.date" content="2025-11-18">
 
 <title>Predictive modeling of claims status</title>
@@ -58,7 +58,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Lucas Childs, </p>
+             <p>Lucas Childs, Akhil </p>
           </div>
   </div>
     
@@ -119,6 +119,78 @@ ul.task-list li input[type="checkbox"] {
 </table>
 </div>
 </div>
+</section>
+<section id="predictive-modeling-of-claims-status-primary-task-1b" class="level2">
+<h2 class="anchored" data-anchor-id="predictive-modeling-of-claims-status-primary-task-1b">Predictive modeling of claims status (Primary Task 1B)</h2>
+<section id="abstract-1" class="level3">
+<h3 class="anchored" data-anchor-id="abstract-1">Abstract</h3>
+<p>For Primary Task 1B, I developed a multi-class prediction model that assigns webpages to one of five possible claim-related categories. The workflow involved preprocessing raw HTML text, generating semantic embeddings using a SentenceTransformer model, and training a neural network classifier in PyTorch. The model achieved a validation accuracy of about 93 percent. After validation, I applied the model to the unlabeled test set and saved the predictions in <code>mclass_pred.RData</code> for integration into the team’s final submission.</p>
+</section>
+<section id="preprocessing-1" class="level3">
+<h3 class="anchored" data-anchor-id="preprocessing-1">Preprocessing</h3>
+<p>The raw dataset provides HTML strings under the <code>text_tmp</code> field. I used BeautifulSoup in Python to remove scripts, styles, and all HTML markup, leaving only readable text. The text was converted to lowercase, and URLs and noninformative symbols were removed. Whitespace was normalized and the cleaned version was stored as <code>text_clean</code>. This preprocessing was applied to both the training dataset and the unlabeled claim-test dataset. I saved the cleaned versions as <code>claims_clean_processed.csv</code> and <code>claims_test_processed.csv</code>.</p>
+</section>
+<section id="methods-1" class="level3">
+<h3 class="anchored" data-anchor-id="methods-1">Methods</h3>
+<p>The modeling pipeline consisted of two main parts. First, I used the <code>all-MiniLM-L6-v2</code> SentenceTransformer model to convert each webpage into a 384-dimensional semantic embedding. These embeddings capture contextual meaning better than bag-of-words or simple token encodings.</p>
+<p>Second, I trained a fully connected neural network in PyTorch with two hidden layers, ReLU activations, and dropout for regularization. I split the cleaned data into training and validation sets using an 80–20 stratified split. The network was trained for ten epochs using cross entropy loss and the Adam optimizer. After training and validation, I retrained the model on the full dataset to produce the deployable version used for inference.</p>
+</section>
+<section id="results-1" class="level3">
+<h3 class="anchored" data-anchor-id="results-1">Results</h3>
+<p>The model performed well on the validation set, achieving approximately 93 percent accuracy. Precision, recall, and F1 scores were strong across all five classes, particularly for the more clearly defined categories such as Possible Fatality and Potentially unlawful activity. The following table summarizes the validation metrics.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Validation performance by class</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Class</th>
+<th style="text-align: right;">Precision</th>
+<th style="text-align: right;">Recall</th>
+<th style="text-align: right;">F1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">N/A: No relevant content</td>
+<td style="text-align: right;">0.97</td>
+<td style="text-align: right;">0.89</td>
+<td style="text-align: right;">0.93</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Other claim content</td>
+<td style="text-align: right;">0.85</td>
+<td style="text-align: right;">0.85</td>
+<td style="text-align: right;">0.85</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Physical Activity</td>
+<td style="text-align: right;">0.85</td>
+<td style="text-align: right;">0.98</td>
+<td style="text-align: right;">0.91</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Possible Fatality</td>
+<td style="text-align: right;">0.92</td>
+<td style="text-align: right;">0.98</td>
+<td style="text-align: right;">0.95</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Potentially unlawful activity</td>
+<td style="text-align: right;">0.92</td>
+<td style="text-align: right;">0.99</td>
+<td style="text-align: right;">0.95</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>After validating the model, I generated predictions for all 929 unlabeled webpages in <code>claims-test.RData</code>. The predictions were saved as <code>mclass_pred.RData</code> and linked by <code>.id</code> to the group’s binary predictions from Primary Task 1A. These merged results form the final file necessary for Deliverable 3.</p>
+</section>
+<section id="deliverables" class="level3">
+<h3 class="anchored" data-anchor-id="deliverables">Deliverables</h3>
+<p>All required files for Primary Task 1B have been included. The deployable model (<code>mclass_torch_model.pt</code>) and label mapping (<code>mclass_label_mapping.json</code>) are stored in the <code>results/</code> directory. The preprocessing, training, and prediction scripts are stored in <code>scripts/</code>, including a demonstration script showing how to load the saved model and run inference on new text. The final predictions for the test set were saved to <code>preds_group10.RData</code> and provided to the group for integration into the final submission.</p>
+</section>
 </section>
 
 </main>
