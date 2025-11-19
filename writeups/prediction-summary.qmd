@@ -31,3 +31,47 @@ CNN_metrics <- data.frame(
 knitr::kable(CNN_metrics)
 ```
 
+## Predictive modeling of claims status (Primary Task 1B)
+
+### Abstract
+
+For Primary Task 1B, I developed a multi-class prediction model that assigns webpages to one of five possible claim-related categories. The workflow involved preprocessing raw HTML text, generating semantic embeddings using a SentenceTransformer model, and training a neural network classifier in PyTorch. The model achieved a validation accuracy of about 93 percent. After validation, I applied the model to the unlabeled test set and saved the predictions in `mclass_pred.RData` for integration into the team's final submission.
+
+### Preprocessing
+
+The raw dataset provides HTML strings under the `text_tmp` field. I used BeautifulSoup in Python to remove scripts, styles, and all HTML markup, leaving only readable text. The text was converted to lowercase, and URLs and noninformative symbols were removed. Whitespace was normalized and the cleaned version was stored as `text_clean`. This preprocessing was applied to both the training dataset and the unlabeled claim-test dataset. I saved the cleaned versions as `claims_clean_processed.csv` and `claims_test_processed.csv`.
+
+### Methods
+
+The modeling pipeline consisted of two main parts. First, I used the `all-MiniLM-L6-v2` SentenceTransformer model to convert each webpage into a 384-dimensional semantic embedding. These embeddings capture contextual meaning better than bag-of-words or simple token encodings.
+
+Second, I trained a fully connected neural network in PyTorch with two hidden layers, ReLU activations, and dropout for regularization. I split the cleaned data into training and validation sets using an 80–20 stratified split. The network was trained for ten epochs using cross entropy loss and the Adam optimizer. After training and validation, I retrained the model on the full dataset to produce the deployable version used for inference.
+
+### Results
+
+The model performed well on the validation set, achieving approximately 93 percent accuracy. Precision, recall, and F1 scores were strong across all five classes, particularly for the more clearly defined categories such as Possible Fatality and Potentially unlawful activity. The following table summarizes the validation metrics.
+
+```{r echo=FALSE, message=FALSE}
+library(knitr)
+
+results <- data.frame(
+  Class = c("N/A: No relevant content",
+            "Other claim content",
+            "Physical Activity",
+            "Possible Fatality",
+            "Potentially unlawful activity"),
+  Precision = c(0.97, 0.85, 0.85, 0.92, 0.92),
+  Recall = c(0.89, 0.85, 0.98, 0.98, 0.99),
+  F1 = c(0.93, 0.85, 0.91, 0.95, 0.95)
+)
+
+kable(results, caption = "Validation performance by class")
+```
+
+After validating the model, I generated predictions for all 929 unlabeled webpages in `claims-test.RData`. The predictions were saved as `mclass_pred.RData` and linked by `.id` to the group’s binary predictions from Primary Task 1A. These merged results form the final file necessary for Deliverable 3.
+
+### Deliverables
+
+All required files for Primary Task 1B have been included. The deployable model (`mclass_torch_model.pt`) and label mapping (`mclass_label_mapping.json`) are stored in the `results/` directory. The preprocessing, training, and prediction scripts are stored in `scripts/`, including a demonstration script showing how to load the saved model and run inference on new text. The final predictions for the test set were saved to `mclass_pred.RData` and provided to the group for integration into the final submission.
+
+
