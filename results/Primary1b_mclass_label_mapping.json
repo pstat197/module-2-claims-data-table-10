@@ -1,0 +1,16 @@
+{
+  "class_to_id": {
+    "N/A: No relevant content.": 0,
+    "Other claim content": 1,
+    "Physical Activity": 2,
+    "Possible Fatality": 3,
+    "Potentially unlawful activity": 4
+  },
+  "id_to_class": {
+    "0": "N/A: No relevant content.",
+    "1": "Other claim content",
+    "2": "Physical Activity",
+    "3": "Possible Fatality",
+    "4": "Potentially unlawful activity"
+  }
+}

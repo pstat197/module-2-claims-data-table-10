@@ -57,3 +57,36 @@ nlp_fn <- function(parse_data.out){
                 values_fill = 0)
   return(out)
 }
+
+
+######### new functions to keep HTML headers (Q1) ######### 
+
+# function to parse html and clean text (KEEP HEADERS)
+parse_fn2 <- function(.html){
+  read_html(.html) %>%
+    html_elements('p, h1, h2, h3, h4, h5, h6') %>%  # including all headers (if available)
+    html_text2() %>%
+    str_c(collapse = ' ') %>%
+    rm_url() %>%
+    rm_email() %>%
+    str_remove_all('\'') %>%
+    str_replace_all(paste(c('\n', 
+                            '[[:punct:]]', 
+                            'nbsp', 
+                            '[[:digit:]]', 
+                            '[[:symbol:]]'),
+                          collapse = '|'), ' ') %>%
+    str_replace_all("([a-z])([A-Z])", "\\1 \\2") %>%
+    tolower() %>%
+    str_replace_all("\\s+", " ")
+}
+
+# function to apply to claims data (WITH HEADERS)
+parse_data2 <- function(.df){
+  out <- .df %>%
+    filter(str_detect(text_tmp, '<!')) %>%
+    rowwise() %>%
+    mutate(text_clean = parse_fn2(text_tmp)) %>%
+    unnest(text_clean) 
+  return(out)
+}
