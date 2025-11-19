@@ -1,6 +1,6 @@
 ---
 title: "Summary of exploratory tasks"
-author: 'Lucas Childs, ...'
+author: 'Lucas Childs, Nini Yen, ...'
 date: today
 ---
 
@@ -16,12 +16,62 @@ Do bigrams capture additional information relevant to the classification of inte
 
 ### Neural net
 
-Summarize the neural network model you trained by desribing:
+We trained a text-classification neural network using a standard Keras pipeline.
 
--   architecture
+#### **Architecture**
 
--   optimization and loss
+The final model had the following structure:
 
--   training epochs
+-   **TextVectorization layer**\
 
--   predictive accuracy
+    Converts raw text into integer sequences using a learned vocabulary of the top 10,000 tokens and a fixed sequence length of 100.
+
+-   **Embedding layer**
+
+    -   Vocabulary size: 10,001
+
+    -   Embedding dimension: 16\
+        Learns dense vector representations of tokens.
+
+-   **GlobalAveragePooling1D layer**
+    Aggregates token embeddings across the entire sequence into a single fixed-length vector, giving a compact sentence representation.
+
+-   **Dense(16, ReLU) layer**
+    Learns nonlinear combinations of the pooled embedding features.
+
+-   **Dense(1, sigmoid) output layer**
+    Produces a probability for the binary classification task.
+
+#### **Optimization and Loss**
+
+-   **Optimizer:** Adam
+
+-   **Loss function:** Binary cross-entropy
+
+-   **Evaluation metric:** Accuracy
+
+    These choices are standard for binary text classification and typically yield fast, stable convergence.
+
+    #### **Training Setup**
+
+-   **Training epochs:** 5
+
+-   **Batch size:** 32
+
+-   **Data splits:**
+
+    -   56% training
+
+    -   24% validation
+
+    -   20% held-out test set (never used during training or validation)
+
+-   The TextVectorization layer was **adapted only on the training split** to avoid data leakage.
+
+    #### **Predictive Accuracy**
+
+    On the unseen test set, the model achieved:
+
+    **Test accuracy: 0.7804**
+
+    This exceeds the baseline logistic principal component regression accuracy (0.771–0.797 depending on preprocessing) and demonstrates that the neural network provides competitive or better predictive performance.
