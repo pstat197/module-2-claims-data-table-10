@@ -1,10 +1,10 @@
 """
-Make predictions using saved CNN model
+Make predictions using saved CNN model for binary classification
 """
 import torch
 import pickle
 from torch.utils.data import DataLoader, TensorDataset
-from lucas_primary_A import load_data, clean_html
+from lucas_primary_a_preprocess import load_data, clean_html
 from cnn import TextCNN, TextPreprocessor  # Import model classes
 
 # Set device

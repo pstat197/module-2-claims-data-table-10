@@ -9,9 +9,7 @@ from bs4 import BeautifulSoup
 import re
 from sklearn.model_selection import train_test_split
 
-# ============================================================================
-# STEP 1: Load RData and Extract Text
-# ============================================================================
+# Load RData and Extract Text
 
 def load_data(data_path):
     """Load RData file and return dataframe"""
@@ -68,9 +66,7 @@ def preprocess_data(data_path):
 
     return df
 
-# ============================================================================
-# STEP 2: Split Data
-# ============================================================================
+# Split Data
 
 def split_data(df, test_size=0.2, val_size=0.1, random_state=42):
     """Split data into train, validation, and test sets"""
@@ -93,9 +89,7 @@ def split_data(df, test_size=0.2, val_size=0.1, random_state=42):
 
     return train, val, test
 
-# ============================================================================
 # Main execution
-# ============================================================================
 
 def load_and_split_data(data_path="data/claims-raw.RData", test_size=0.2, val_size=0.1, random_state=42):
     """

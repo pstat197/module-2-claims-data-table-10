@@ -1,5 +1,5 @@
 """
-Evaluate CNN model and compute detailed metrics (accuracy, sensitivity, specificity)
+Evaluate CNN model and compute metrics (accuracy, sensitivity, specificity)
 without retraining
 """
 import torch
@@ -7,7 +7,7 @@ import pickle
 import numpy as np
 from torch.utils.data import DataLoader, TensorDataset
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
-from lucas_primary_A import load_and_split_data
+from lucas_primary_a_preprocess import load_and_split_data
 from cnn import TextCNN, TextPreprocessor
 
 # Set device

@@ -1,5 +1,5 @@
 """
-Deep Neural Network for Webpage Classification
+Deep Neural Network for binary Webpage Classification
 Author: Lucas Childs
 """
 
@@ -150,7 +150,7 @@ def evaluate_model(model, test_loader, y_test):
 
 if __name__ == "__main__":
     import os
-    from lucas_primary_A import load_and_split_data
+    from lucas_primary_a_preprocess import load_and_split_data
 
     os.makedirs('results', exist_ok=True)
 
